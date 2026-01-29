@@ -12,7 +12,6 @@ struct MessagesBottomBar: View {
     @Binding var messageText: String
     let sendButtonEnabled: Bool
     @Binding var profileImage: UIImage?
-    @FocusState.Binding var focusState: MessagesViewInputFocus?
     let focusCoordinator: FocusCoordinator
     let onboardingCoordinator: ConversationOnboardingCoordinator
     let messagesTextFieldEnabled: Bool
@@ -26,6 +25,7 @@ struct MessagesBottomBar: View {
     @State private var isExpanded: Bool = false
     @State private var isImagePickerPresented: Bool = false
     @Namespace private var namespace: Namespace.ID
+
 
     var quicknamePlaceholderText: String {
         onboardingCoordinator.state == .settingUpQuickname ? "Add your name" : "Your name"
@@ -42,7 +42,6 @@ struct MessagesBottomBar: View {
                         emptyDisplayNamePlaceholder: emptyDisplayNamePlaceholder,
                         messageText: $messageText,
                         sendButtonEnabled: sendButtonEnabled,
-                        focusState: $focusState,
                         animateAvatarForQuickname: onboardingCoordinator.shouldAnimateAvatarForQuicknameSetup,
                         messagesTextFieldEnabled: messagesTextFieldEnabled,
                         onProfilePhotoTap: onProfilePhotoTap,
@@ -61,7 +60,6 @@ struct MessagesBottomBar: View {
                         text: $displayName,
                         image: $profileImage,
                         isImagePickerPresented: $isImagePickerPresented,
-                        focusState: $focusState,
                         focused: .displayName,
                         settingsSymbolName: "lanyardcard.fill",
                         showsSettingsButton: !quicknameSettings.quicknameSettings.isDefault && !onboardingCoordinator.isSettingUpQuickname,
@@ -125,7 +123,6 @@ struct MessagesBottomBar: View {
                 messageText: $messageText,
                 sendButtonEnabled: sendButtonEnabled,
                 profileImage: $profileImage,
-                focusState: $focusState,
                 focusCoordinator: focusCoordinator,
                 onboardingCoordinator: onboardingCoordinator,
                 messagesTextFieldEnabled: true,

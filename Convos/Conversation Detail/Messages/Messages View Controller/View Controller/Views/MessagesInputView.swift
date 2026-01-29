@@ -10,7 +10,6 @@ struct MessagesInputView: View {
     let emptyDisplayNamePlaceholder: String
     @Binding var messageText: String
     let sendButtonEnabled: Bool
-    @FocusState.Binding var focusState: MessagesViewInputFocus?
     let animateAvatarForQuickname: Bool
     let messagesTextFieldEnabled: Bool
     private let focused: MessagesViewInputFocus = .message
@@ -26,6 +25,8 @@ struct MessagesInputView: View {
     }
 
     @State private var avatarScale: CGFloat = 1.0
+
+	@Environment(\.messagesInputFocusBinding) private var focusState
 
     private func updateAnimation() {
         if animateAvatarForQuickname {
@@ -64,7 +65,7 @@ struct MessagesInputView: View {
                     text: $messageText,
                     axis: .vertical
                 )
-                .focused($focusState, equals: focused)
+				.focusedIfAvailable(focusState, equals: focused)
                 .font(.callout)
                 .foregroundStyle(.colorTextPrimary)
                 .tint(.colorTextPrimary)
@@ -74,7 +75,7 @@ struct MessagesInputView: View {
             }
             .onSubmit {
                 onSendMessage()
-                focusState = .message
+				focusState?.wrappedValue = .message
             }
             .frame(maxHeight: .infinity, alignment: .center)
 
@@ -97,6 +98,20 @@ struct MessagesInputView: View {
         .padding(DesignConstants.Spacing.step2x)
         .frame(alignment: .bottom)
     }
+}
+
+extension View {
+	@ViewBuilder
+	func focusedIfAvailable(
+		_ binding: FocusState<MessagesViewInputFocus?>.Binding?,
+		equals value: MessagesViewInputFocus?
+	) -> some View {
+		if let binding {
+			self.focused(binding, equals: value)
+		} else {
+			self
+		}
+	}
 }
 
 #Preview {
@@ -127,7 +142,6 @@ struct MessagesInputView: View {
             emptyDisplayNamePlaceholder: "Somebody",
             messageText: $messageText,
             sendButtonEnabled: sendButtonEnabled,
-            focusState: $focusState,
             animateAvatarForQuickname: animateAvatarForQuickname,
             messagesTextFieldEnabled: true,
             onProfilePhotoTap: {},

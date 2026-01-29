@@ -3,7 +3,7 @@ import SwiftUI
 struct ConversationView<MessagesBottomBar: View>: View {
     @Bindable var viewModel: ConversationViewModel
     @Bindable var quicknameViewModel: QuicknameSettingsViewModel
-    @FocusState.Binding var focusState: MessagesViewInputFocus?
+
     let focusCoordinator: FocusCoordinator
     let onScanInviteCode: () -> Void
     let onDeleteConversation: () -> Void
@@ -34,7 +34,6 @@ struct ConversationView<MessagesBottomBar: View>: View {
             sendButtonEnabled: viewModel.sendButtonEnabled,
             profileImage: $viewModel.myProfileViewModel.profileImage,
             onboardingCoordinator: onboardingCoordinator,
-            focusState: $focusState,
             focusCoordinator: focusCoordinator,
             messagesTextFieldEnabled: messagesTextFieldEnabled,
             onUserInteraction: {
@@ -199,7 +198,6 @@ struct ConversationView<MessagesBottomBar: View>: View {
         ConversationView(
             viewModel: viewModel,
             quicknameViewModel: quicknameViewModel,
-            focusState: $focusState,
             focusCoordinator: focusCoordinator,
             onScanInviteCode: {},
             onDeleteConversation: {},

@@ -13,12 +13,7 @@ struct NewConversationView: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass: UserInterfaceSizeClass?
 
     var body: some View {
-        ConversationPresenter(
-            viewModel: viewModel.conversationViewModel,
-            focusCoordinator: focusCoordinator,
-            insetsTopSafeArea: false,
-            sidebarColumnWidth: $sidebarWidth
-        ) { focusState, coordinator in
+
             NavigationStack {
                 @Bindable var viewModel = viewModel
                 Group {
@@ -31,19 +26,18 @@ struct NewConversationView: View {
                             }
                         )
                     } else {
-                        let conversationViewModel = viewModel.conversationViewModel
-                        ConversationView(
-                            viewModel: conversationViewModel,
-                            quicknameViewModel: quicknameViewModel,
-                            focusState: focusState,
-                            focusCoordinator: coordinator,
-                            onScanInviteCode: viewModel.onScanInviteCode,
-                            onDeleteConversation: viewModel.deleteConversation,
-                            messagesTopBarTrailingItem: viewModel.messagesTopBarTrailingItem,
-                            messagesTopBarTrailingItemEnabled: viewModel.messagesTopBarTrailingItemEnabled,
-                            messagesTextFieldEnabled: viewModel.messagesTextFieldEnabled
-                        ) {
-                        }
+						let conversationViewModel = viewModel.conversationViewModel
+						ConversationView(
+							viewModel: conversationViewModel,
+							quicknameViewModel: quicknameViewModel,
+							focusCoordinator: focusCoordinator,
+							onScanInviteCode: viewModel.onScanInviteCode,
+							onDeleteConversation: viewModel.deleteConversation,
+							messagesTopBarTrailingItem: viewModel.messagesTopBarTrailingItem,
+							messagesTopBarTrailingItemEnabled: viewModel.messagesTopBarTrailingItemEnabled,
+							messagesTextFieldEnabled: viewModel.messagesTextFieldEnabled
+						) {
+						}
                         .toolbar {
                             ToolbarItem(placement: .topBarLeading) {
                                 Button(role: .close) {
@@ -89,7 +83,12 @@ struct NewConversationView: View {
                     }
                 }
             }
-        }
+			.inConversationPresenter(
+				viewModel: viewModel.conversationViewModel,
+				focusCoordinator: focusCoordinator,
+				insetsTopSafeArea: true,
+				sidebarColumnWidth: $sidebarWidth
+			)
         .onAppear {
             focusCoordinator.horizontalSizeClass = horizontalSizeClass
             viewModel.setDismissAction(dismiss)

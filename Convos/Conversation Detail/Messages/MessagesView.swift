@@ -21,7 +21,6 @@ struct MessagesView<BottomBarContent: View>: View {
     let sendButtonEnabled: Bool
     @Binding var profileImage: UIImage?
     let onboardingCoordinator: ConversationOnboardingCoordinator
-    @FocusState.Binding var focusState: MessagesViewInputFocus?
     let focusCoordinator: FocusCoordinator
     let messagesTextFieldEnabled: Bool
     let onUserInteraction: () -> Void
@@ -65,7 +64,6 @@ struct MessagesView<BottomBarContent: View>: View {
                     messageText: $messageText,
                     sendButtonEnabled: sendButtonEnabled,
                     profileImage: $profileImage,
-                    focusState: $focusState,
                     focusCoordinator: focusCoordinator,
                     onboardingCoordinator: onboardingCoordinator,
                     messagesTextFieldEnabled: messagesTextFieldEnabled,

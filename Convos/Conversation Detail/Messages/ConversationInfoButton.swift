@@ -50,7 +50,6 @@ struct ConversationInfoButton<InfoView: View>: View {
                             text: $conversationName,
                             image: $conversationImage,
                             isImagePickerPresented: $isImagePickerPresented,
-                            focusState: $focusState,
                             focused: .conversationName,
                             settingsSymbolName: "gear",
                             showsSettingsButton: true,

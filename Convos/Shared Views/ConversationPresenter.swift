@@ -1,11 +1,24 @@
 import SwiftUI
 
+@MainActor
+private struct MessagesInputFocusBindingKey: @MainActor EnvironmentKey {
+	static var defaultValue: FocusState<MessagesViewInputFocus?>.Binding? { nil }
+}
+
+extension EnvironmentValues {
+	@MainActor
+	var messagesInputFocusBinding: FocusState<MessagesViewInputFocus?>.Binding? {
+		get { self[MessagesInputFocusBindingKey.self] }
+		set { self[MessagesInputFocusBindingKey.self] = newValue }
+	}
+}
+
 struct ConversationPresenter<Content: View>: View {
     let viewModel: ConversationViewModel?
     let focusCoordinator: FocusCoordinator
     let insetsTopSafeArea: Bool
     @Binding var sidebarColumnWidth: CGFloat
-    @ViewBuilder let content: (FocusState<MessagesViewInputFocus?>.Binding, FocusCoordinator) -> Content
+    @ViewBuilder let content: (FocusCoordinator) -> Content
 
     @FocusState private var focusState: MessagesViewInputFocus?
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass: UserInterfaceSizeClass?
@@ -13,7 +26,7 @@ struct ConversationPresenter<Content: View>: View {
 
     var body: some View {
         ZStack {
-            content($focusState, focusCoordinator)
+            content(focusCoordinator)
 
             VStack {
                 if let viewModel = viewModel, viewModel.showsInfoView {
@@ -107,7 +120,7 @@ private struct ConversationInfoButtonWrapper: View {
         focusCoordinator: focusCoordinator,
         insetsTopSafeArea: false,
         sidebarColumnWidth: $sidebarColumnWidth
-    ) { _, _ in
+    ) { _ in
         EmptyView()
     }
     .withSafeAreaEnvironment()

@@ -16,7 +16,6 @@ struct QuickEditView: View {
     @Binding var text: String
     @Binding var image: UIImage?
     @Binding var isImagePickerPresented: Bool
-    @FocusState.Binding var focusState: MessagesViewInputFocus?
     let focused: MessagesViewInputFocus
     let imageSymbolName: String = "photo.fill.on.rectangle.fill"
     let settingsSymbolName: String
@@ -25,6 +24,7 @@ struct QuickEditView: View {
     let onSettings: () -> Void
 
     @State private var textFieldDelegate: TextFieldDelegate = .init()
+	@Environment(\.messagesInputFocusBinding) private var focusState
 
     var body: some View {
         HStack {
@@ -39,7 +39,7 @@ struct QuickEditView: View {
                 placeholderText,
                 text: $text
             )
-            .focused($focusState, equals: focused)
+			.focusedIfAvailable(focusState, equals: focused)
             .introspect(.textField, on: .iOS(.v26)) { textField in
                 textFieldDelegate.action = onSubmit
                 textField.delegate = textFieldDelegate
@@ -100,13 +100,11 @@ struct QuickEditView: View {
     @Previewable @State var text: String = ""
     @Previewable @State var image: UIImage?
     @Previewable @State var isImagePickerPresented: Bool = false
-    @Previewable @FocusState var focusState: MessagesViewInputFocus?
     QuickEditView(
         placeholderText: "New convo",
         text: $text,
         image: $image,
         isImagePickerPresented: $isImagePickerPresented,
-        focusState: $focusState,
         focused: .displayName,
         settingsSymbolName: "gear",
         showsSettingsButton: true,

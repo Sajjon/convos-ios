@@ -7,7 +7,7 @@ struct ConversationsListEmptyCTA: View {
     let onJoinConvo: () -> Void
 
     @Environment(\.openURL) private var openURL: OpenURLAction
-
+	@State var explodeState = ExplodeState.ready
     var body: some View {
         VStack(spacing: 0.0) {
             VStack(alignment: .leading, spacing: DesignConstants.Spacing.step4x) {
@@ -18,6 +18,7 @@ struct ConversationsListEmptyCTA: View {
                 Text("Chat instantly, with anybody.\nNo accounts. New you every time.")
                     .font(.body)
                     .foregroundStyle(.colorTextSecondary)
+				
                 HStack {
                     Button {
                         onStartConvo()
